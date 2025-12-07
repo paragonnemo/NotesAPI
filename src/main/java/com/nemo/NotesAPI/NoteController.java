@@ -26,10 +26,9 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
+    public Note getNoteById(@PathVariable Long id) {
         return noteService.getNoteById(id)
-                .map(ResponseEntity::ok)
-                .orElse(notFound().build());
+                .orElseThrow(() -> new NoteNotFoundException(id));
     }
 
     @PostMapping
@@ -39,16 +38,18 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @Valid @RequestBody NoteRequest request) {
+    public Note updateNote(@PathVariable Long id,
+                           @Valid @RequestBody NoteRequest request) {
         return noteService.updateNote(id, request)
-                .map(ResponseEntity::ok)
-                .orElse(notFound().build());
+                .orElseThrow(() -> new NoteNotFoundException(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
-        return noteService.deleteNote(id)
-                ? noContent().build()
-                : notFound().build();
+        boolean deleted = noteService.deleteNote(id);
+        if(!deleted){
+            throw new NoteNotFoundException(id);
+        }
+        return noContent().build();
     }
 }

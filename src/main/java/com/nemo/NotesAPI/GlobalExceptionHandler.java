@@ -29,4 +29,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(body);
     }
+
+    @ExceptionHandler(NoteNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handeNotNotFound(NoteNotFoundException ex){
+        Map<String, Object> body = new HashMap<>();
+        body.put("status",HttpStatus.NOT_FOUND.value());
+        body.put("error","Note Not Found");
+        body.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
 }
