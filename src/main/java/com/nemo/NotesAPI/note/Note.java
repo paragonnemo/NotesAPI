@@ -1,19 +1,28 @@
 package com.nemo.NotesAPI.note;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "notes")
 public class Note {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String title;
+
+    @Column(nullable = false, length = 5000)
     private String content;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public Note() {}
-    public Note(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt){
-        this.id = id;
+    public Note(String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt){
         this. title = title;
         this.content = content;
         this.createdAt = createdAt;

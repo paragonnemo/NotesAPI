@@ -2,55 +2,51 @@ package com.nemo.NotesAPI.service;
 
 import com.nemo.NotesAPI.note.Note;
 import com.nemo.NotesAPI.note.NoteRequest;
+import com.nemo.NotesAPI.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService {
 
-    private final Map<Long, Note> notes = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final NoteRepository noteRepository;
+
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
+    }
 
     public List<Note> getAllNotes() {
-        return new ArrayList<>(notes.values());
+        return noteRepository.findAll();
     }
 
     public Optional<Note> getNoteById(long id) {
-        return Optional.ofNullable(notes.get(id));
+        return noteRepository.findById(id);
     }
 
     public Note createNote(NoteRequest request) {
-        long id = idGenerator.getAndIncrement();
         LocalDateTime now = LocalDateTime.now();
-
-        Note note = new Note();
-        note.setId(id);
-        note.setTitle(request.getTitle());
-        note.setContent(request.getContent());
-        note.setCreatedAt(now);
-        note.setUpdatedAt(now);
-
-        notes.put(id, note);
-        return note;
+        Note note = new Note(request.getTitle(), request.getContent(), now, now);
+        return noteRepository.save(note);
     }
 
 
     public Optional<Note> updateNote(Long id, NoteRequest request) {
-        Note existing = notes.get(id);
-        LocalDateTime now = LocalDateTime.now();
-        if (existing == null){
-            return Optional.empty();
-        }
-        existing.setTitle(request.getTitle());
-        existing.setContent(request.getContent());
-        existing.setUpdatedAt(now);
-        return Optional.of(existing);
+        return noteRepository.findById(id).map(existing -> {
+            existing.setTitle(request.getTitle());
+            existing.setContent(request.getContent());
+            existing.setUpdatedAt(LocalDateTime.now());
+            return noteRepository.save(existing);
+        });
     }
 
     public boolean deleteNote(Long id){
-        return notes.remove(id) != null;
+        if (!noteRepository.existsById(id)){
+            return false;
+        }
+        noteRepository.deleteById(id);
+        return true;
     }
 }
