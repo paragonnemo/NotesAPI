@@ -2,51 +2,20 @@ package com.nemo.NotesAPI.service;
 
 import com.nemo.NotesAPI.note.Note;
 import com.nemo.NotesAPI.note.NoteRequest;
-import com.nemo.NotesAPI.repository.NoteRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
-@Service
-public class NoteService {
+public interface NoteService {
 
-    private final NoteRepository noteRepository;
+    Page<Note> getAllNotes(Pageable pageable);
 
-    public NoteService(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-    }
+    Optional<Note> getNoteById(Long id);
 
-    public List<Note> getAllNotes() {
-        return noteRepository.findAll();
-    }
+    Note createNote(NoteRequest request);
 
-    public Optional<Note> getNoteById(long id) {
-        return noteRepository.findById(id);
-    }
+    Optional<Note> updateNote(Long id, NoteRequest request);
 
-    public Note createNote(NoteRequest request) {
-        LocalDateTime now = LocalDateTime.now();
-        Note note = new Note(request.getTitle(), request.getContent(), now, now);
-        return noteRepository.save(note);
-    }
-
-
-    public Optional<Note> updateNote(Long id, NoteRequest request) {
-        return noteRepository.findById(id).map(existing -> {
-            existing.setTitle(request.getTitle());
-            existing.setContent(request.getContent());
-            existing.setUpdatedAt(LocalDateTime.now());
-            return noteRepository.save(existing);
-        });
-    }
-
-    public boolean deleteNote(Long id){
-        if (!noteRepository.existsById(id)){
-            return false;
-        }
-        noteRepository.deleteById(id);
-        return true;
-    }
+    boolean deleteNote(Long id);
 }

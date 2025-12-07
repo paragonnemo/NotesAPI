@@ -1,17 +1,20 @@
 package com.nemo.NotesAPI.controller;
 
 import com.nemo.NotesAPI.service.NoteService;
+import com.nemo.NotesAPI.service.NoteServiceImpl;
 import com.nemo.NotesAPI.exception.NoteNotFoundException;
 import com.nemo.NotesAPI.note.Note;
 import com.nemo.NotesAPI.note.NoteRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.http.ResponseEntity.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/notes")
@@ -19,13 +22,13 @@ public class NoteController {
 
     private final NoteService noteService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteServiceImpl noteService) {
         this.noteService = noteService;
     }
 
     @GetMapping
-    public List<Note> getAllNotes() {
-        return noteService.getAllNotes();
+    public Page<Note> getAllNotes(Pageable pageable) {
+        return noteService.getAllNotes(pageable);
     }
 
     @GetMapping("/{id}")
@@ -37,7 +40,16 @@ public class NoteController {
     @PostMapping
     public ResponseEntity<Note> createNote(@Valid @RequestBody NoteRequest request) {
         Note created = noteService.createNote(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+
+        return ResponseEntity
+                .created(location)
+                .body(created);
     }
 
     @PutMapping("/{id}")
@@ -55,4 +67,5 @@ public class NoteController {
         }
         return noContent().build();
     }
+
 }
