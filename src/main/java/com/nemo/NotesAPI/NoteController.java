@@ -1,5 +1,6 @@
 package com.nemo.NotesAPI;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.http.ResponseEntity.*;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +32,13 @@ public class NoteController {
     }
 
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestBody Note note) {
+    public ResponseEntity<Note> createNote(@Valid @RequestBody Note note) {
         Note created = noteService.createNote(note);
         return ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note) {
+    public ResponseEntity<Note> updateNote(@PathVariable Long id, @Valid @RequestBody Note note) {
         return noteService.updateNote(id, note)
                 .map(ResponseEntity::ok)
                 .orElse(notFound().build());
