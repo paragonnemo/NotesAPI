@@ -1,24 +1,25 @@
 package com.nemo.NotesAPI;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDateTime;
 
 public class Note {
 
     private Long id;
-
-    @NotBlank(message = "Title cannot be empty!")
-    @Size(max = 100, message = "Title cannot be more than 100 characters!")
     private String title;
-
-    @NotBlank(message = "Content cannot be empty.")
     private String content;
 
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     public Note() {}
-    public Note(Long id, String title, String content){
+    public Note(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.id = id;
         this. title = title;
         this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public long getId() {
@@ -43,5 +44,21 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

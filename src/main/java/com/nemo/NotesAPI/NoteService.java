@@ -2,6 +2,7 @@ package com.nemo.NotesAPI;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -19,20 +20,31 @@ public class NoteService {
         return Optional.ofNullable(notes.get(id));
     }
 
-    public Note createNote(Note note) {
+    public Note createNote(NoteRequest request) {
         long id = idGenerator.getAndIncrement();
+        LocalDateTime now = LocalDateTime.now();
+
+        Note note = new Note();
         note.setId(id);
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
+        note.setCreatedAt(now);
+        note.setUpdatedAt(now);
+
         notes.put(id, note);
         return note;
     }
 
-    public Optional<Note> updateNote(Long id, Note updated) {
+
+    public Optional<Note> updateNote(Long id, NoteRequest request) {
         Note existing = notes.get(id);
+        LocalDateTime now = LocalDateTime.now();
         if (existing == null){
             return Optional.empty();
         }
-        existing.setTitle(updated.getTitle());
-        existing.setContent(updated.getContent());
+        existing.setTitle(request.getTitle());
+        existing.setContent(request.getContent());
+        existing.setUpdatedAt(now);
         return Optional.of(existing);
     }
 
