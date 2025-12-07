@@ -1,4 +1,4 @@
-package com.nemo.NotesAPI;
+package com.nemo.NotesAPI.exception;
 
 public class NoteNotFoundException extends RuntimeException{
 

@@ -1,6 +1,4 @@
-package com.nemo.NotesAPI;
-
-import org.springframework.cglib.core.Local;
+package com.nemo.NotesAPI.note;
 
 import java.time.LocalDateTime;
 

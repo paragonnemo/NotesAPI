@@ -1,5 +1,7 @@
-package com.nemo.NotesAPI;
+package com.nemo.NotesAPI.service;
 
+import com.nemo.NotesAPI.note.Note;
+import com.nemo.NotesAPI.note.NoteRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

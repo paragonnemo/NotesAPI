@@ -1,4 +1,4 @@
-package com.nemo.NotesAPI;
+package com.nemo.NotesAPI.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

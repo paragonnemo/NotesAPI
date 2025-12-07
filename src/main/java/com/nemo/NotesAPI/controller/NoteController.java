@@ -1,5 +1,9 @@
-package com.nemo.NotesAPI;
+package com.nemo.NotesAPI.controller;
 
+import com.nemo.NotesAPI.service.NoteService;
+import com.nemo.NotesAPI.exception.NoteNotFoundException;
+import com.nemo.NotesAPI.note.Note;
+import com.nemo.NotesAPI.note.NoteRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +11,6 @@ import static org.springframework.http.ResponseEntity.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

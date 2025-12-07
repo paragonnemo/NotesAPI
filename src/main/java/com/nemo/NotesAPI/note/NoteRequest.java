@@ -1,4 +1,4 @@
-package com.nemo.NotesAPI;
+package com.nemo.NotesAPI.note;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
