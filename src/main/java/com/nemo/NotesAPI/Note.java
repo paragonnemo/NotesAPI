@@ -2,11 +2,15 @@ package com.nemo.NotesAPI;
 
 public class Note {
 
-    private long id;
+    private Long id;
     private String title;
     private String content;
 
-    public Note(long id, String title, String content){
+    public Note() {
+
+    }
+
+    public Note(Long id, String title, String content){
         this.id = id;
         this. title = title;
         this.content = content;
@@ -16,7 +20,7 @@ public class Note {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
