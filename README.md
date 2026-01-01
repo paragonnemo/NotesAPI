@@ -57,7 +57,7 @@ Content-Type: application/json
 }
 
 
-Configuration
+## Configuration
 Environment Variables
 
 The application expects the following environment variables:
