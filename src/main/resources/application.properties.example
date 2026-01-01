@@ -3,9 +3,10 @@ spring.web.error.include-message=always
 spring.web.error.include-path=always
 
 # Database connection (example values)
-spring.datasource.url=jdbc:postgresql://localhost:5432/notesdb
-spring.datasource.username=DB_USERNAME
-spring.datasource.password=DB_PASSWORD
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
 
 # JPA settings
 spring.jpa.hibernate.ddl-auto=update
